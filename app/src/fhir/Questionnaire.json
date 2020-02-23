@@ -1,0 +1,29 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "anticoagulation-inclusion-questionnaire",
+  "text": {
+    "status": "final"
+  },
+  "url": "https://portavita.nl/questionnaire/anticoagulation-inclusion-questionnaire",
+  "meta": {
+    "profile": [
+      "https://simplifier.net/anticoagulationscreeningapplication/acsquestionnaire"
+    ]
+  },
+  "title": "Healthcare Interoperability Workshop",
+  "status": "final",
+  "subjectType": "Body Mass Calculation",
+  "date": "2019-10-09",
+  "item": [
+    {
+      "linkId": "1",
+      "text": "Height (cm)",
+      "type": "decimal"
+    },
+    {
+      "linkId": "2",
+      "text": "Weight (kg)",
+      "type": "decimal"
+    }
+  ]
+}
