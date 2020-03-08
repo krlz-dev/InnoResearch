@@ -1,3 +1,6 @@
+POST http://localhost:3001/bmi/calculation
+Content-Type: application/json
+
 {
   "resourceType": "QuestionnaireResponse",
   "id": "QuestionnaireResponse-26ed7ef3-25b1-4e4a-9e33-7c2c7030f25b",
@@ -39,3 +42,6 @@
     }
   ]
 }
+
+
+###

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './css/App.css'
 import Header from './Header'
 import Questionnaire from './Questionnaire'
-import { MuiThemeProvider,createMuiTheme } from '@material-ui/core/styles';
+import Result from './Result'
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import green from '@material-ui/core/colors/green';
 import grey from '@material-ui/core/colors/grey';
 
@@ -17,18 +18,23 @@ const theme = createMuiTheme({
     },
 });
 
-const App = ()=>{
+const App = () => {
+
+    const [bmiResult, setBmiResult] = useState(0);
+
     return (
         <MuiThemeProvider theme={theme}>
             <div className="App">
                 <Header/>
-                <div className="container">
-                    <Questionnaire />
+                <div className="Card container">
+                    <Questionnaire bmiResult={bmiResult}/>
+                    <br/> <br/>
+                    <Result bmiResult={bmiResult}/>
                 </div>
             </div>
         </MuiThemeProvider>
 
     );
-}
+};
 
 export default App;
