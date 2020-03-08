@@ -8,21 +8,22 @@ const Questionnaire = () => {
 
     const [height, setHeight] = useState(0);
     const [weight, setWeight] = useState(0);
-
+    const [bmiResult, setBmiResult] = useState(0);
 
     return (
-        <div>
+        <div className={"Card"}>
             <h3>BMI calculation</h3>
             <TextField label="Height" onChange={event => setHeight(event.target.value)}/> <br/> <br/>
             <TextField label="Weight" onChange={event => setWeight(event.target.value)}/><br/> <br/> <br/>
-            <Button variant="contained" color="primary" onClick={() => calculate_bmi(height, weight)}>Calculate</Button>
+            <Button variant="contained" color="primary"
+                    onClick={async () => setBmiResult(await calculate_bmi(height, weight))}>Calculate</Button>
+            <br/> <br/>
+            <p> Your BMI is: {bmiResult}</p>
         </div>
     )
 };
 
 const calculate_bmi = async (height, weight) => {
-
-
 
     const data = {
         resourceType: 'QuestionnaireResponse',
@@ -74,9 +75,7 @@ const calculate_bmi = async (height, weight) => {
         body: JSON.stringify(data),
     });
     const json = await response.json();
-
-    console.log(json);
-
+    return json.valueQuantity.value
 };
 
 

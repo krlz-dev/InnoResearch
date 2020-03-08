@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import './css/App.css'
 import Header from './Header'
 import Questionnaire from './Questionnaire'
-import Result from './Result'
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import green from '@material-ui/core/colors/green';
 import grey from '@material-ui/core/colors/grey';
@@ -26,10 +25,8 @@ const App = () => {
         <MuiThemeProvider theme={theme}>
             <div className="App">
                 <Header/>
-                <div className="Card container">
+                <div className="container">
                     <Questionnaire bmiResult={bmiResult}/>
-                    <br/> <br/>
-                    <Result bmiResult={bmiResult}/>
                 </div>
             </div>
         </MuiThemeProvider>
