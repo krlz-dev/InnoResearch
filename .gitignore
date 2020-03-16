@@ -1,2 +1,4 @@
 /app/node_modules/
+/service/node_modules/
 /app/.idea/
+/service/.idea/
