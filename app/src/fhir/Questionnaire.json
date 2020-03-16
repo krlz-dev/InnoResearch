@@ -1,19 +1,9 @@
 {
   "resourceType": "Questionnaire",
-  "id": "anticoagulation-inclusion-questionnaire",
-  "text": {
-    "status": "final"
-  },
-  "url": "https://portavita.nl/questionnaire/anticoagulation-inclusion-questionnaire",
-  "meta": {
-    "profile": [
-      "https://simplifier.net/anticoagulationscreeningapplication/acsquestionnaire"
-    ]
-  },
-  "title": "Healthcare Interoperability Workshop",
-  "status": "final",
-  "subjectType": "Body Mass Calculation",
-  "date": "2019-10-09",
+  "id": "QuestionnaireUniqueId",
+  "title": "BMI calculation",
+  "status": "active",
+  "date": "15-03-2020",
   "item": [
     {
       "linkId": "1",

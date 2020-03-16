@@ -1,23 +1,9 @@
 {
   "resourceType": "QuestionnaireResponse",
-  "id": "QuestionnaireResponse-26ed7ef3-25b1-4e4a-9e33-7c2c7030f25b",
-  "meta": {
-    "profile": [
-      "https://simplifier.net/anticoagulationscreeningapplication/acsquestionnaireresponse"
-    ],
-    "tag": [
-      {
-        "code": "PATIENT-ID-86893428934234",
-        "system": "http://portavita.nl/acs-patient"
-      }
-    ]
-  },
-  "identifier": {
-    "system": "https://portavita.nl/questionnaire/questionnaire-response-identifier",
-    "value": "QuestionnaireResponse-26ed7ef3-25b1-4e4a-9e33-7c2c7030f25b"
-  },
+  "questionnaire": "Questionnaire-UniqueId",
+  "id": "QuestionnaireResponse-UniqueId",
   "status": "generated",
-  "authored": "Fri Nov 29 2019 18:53:08 GMT+0300 (Moscow Standard Time)",
+  "authored": "25-12-2020",
   "item": [
     {
       "linkId": "1",
