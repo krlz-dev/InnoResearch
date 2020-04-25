@@ -1,0 +1,44 @@
+version: "3"
+services:
+
+  app:
+    container_name: app
+    image: inno/app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app:/app
+
+  service:
+    container_name: service
+    image: inno/service
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./service:/service
+
+  dbInnopolis:
+    container_name: db-innopolis
+    image: postgres:12
+    ports:
+      - "6432:5432"
+    environment:
+    - POSTGRES_USER=innopolis
+    - POSTGRES_PASSWORD=innopolis
+    - POSTGRES_DB=db_innopolis
+    volumes:
+      - ./database/postgres/data:/var/lib/postgresql/data
+
+  pgAdmin:
+    container_name: pgAdmin
+    depends_on:
+      - dbInnopolis
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "8080:80"
+networks:
+  default:
+    driver: bridge

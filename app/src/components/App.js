@@ -19,7 +19,7 @@ const theme = createMuiTheme({
 
 const App = () => {
 
-    const [bmiResult, setBmiResult] = useState(0);
+    const [bmiResult] = useState(0);
 
     return (
         <MuiThemeProvider theme={theme}>

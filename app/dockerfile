@@ -1,0 +1,8 @@
+FROM node:slim
+LABEL maintainer="Gizzal"
+COPY ./ /app
+COPY ./entrypoint.sh /
+WORKDIR /app
+RUN npm install
+RUN ["chmod", "+x", "/entrypoint.sh"]
+CMD ["bash", "/entrypoint.sh"]
