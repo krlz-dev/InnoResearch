@@ -1,15 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const observation = require('../models/Observation');
-const feature = require('../features/feature')
-
-router.post('/calculation', (req, res) => {
-  const height = req.body.item[0].answer[0].valueDecimal;
-  const weight = req.body.item[1].answer[0].valueDecimal;
-  const patientId = req.param('patient')
-  let calculationResult = feature.bmiCalculation(weight, height)
-  feature.persistenceQuestionnaireResponse(patientId, calculationResult)
-  res.json(observation.observationBmi(calculationResult))
+const observation = require('../models');
+const features = require('../features')
+const models = require('../models/')
+const database = require('../database/dao')
+const questionnaire = require('../fhir/Questionnaire.json')
+router.post('/calculation/:patient', async (req, res) => {
+  const patientId = req.params.patient
+  let questionnaireResponse = req.body
+  let calculationResult = features.bmiCalculation(questionnaireResponse)
+  let observationResult = observation.observationBmi(calculationResult)
+  let questionnaireBundle = models.questionnaireBundle(questionnaire, questionnaireResponse, observationResult)
+  let storeData = await database.storeBundle(patientId, JSON.stringify(questionnaireBundle))
+  if(storeData==="INSERT") {res.json(observationResult)}
 });
 
 module.exports = router;

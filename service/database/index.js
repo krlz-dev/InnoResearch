@@ -1,16 +1,24 @@
 /**Create db schema**/
 const Pool = require("pg").Pool;
-const schemaName = "inno_schema";
+
 let pgSchemas = [];
-const postgresRole = "inno_role";
+
+const schemaName = "inno_schema";
+const postgresUser = "innopolis";
+const postgresPass = "innopolis";
+const postgresDb = "db_innopolis";
+const host = "dbInnopolis";
+const port ="5432"
 
 const pool = new Pool({
-  user: postgresRole,
-  host: "innopolis",
-  database: "db_innopolis",
-  password: "innopolis",
-  port: "5432"
+  user: postgresUser,
+  host: host,
+  database: postgresDb,
+  password: postgresPass,
+  port: port
 });
+
+//we should connect here
 
 const schemaCodes = {
   "25007": "schema_and_data_statement_mixing_not_supported",
@@ -18,77 +26,33 @@ const schemaCodes = {
   "42P06": "duplicate_schema",
   "42P15": "invalid_schema_definition",
   "42000": "syntax_error_or_access_rule_violation",
-  "42601": "syntax_error"
+  "42601": "syntax_error",
+  "28P01": "wrong user or password",
+  "ENOTFOUND": "wrong host connection"
 };
 
-exports.schemaFuncs = async () => {
-  // Declare a string for the Pool's query
-  // let selectSchemasSql = `SELECT ${schemaName} FROM information_schema.schemata;`;
-  // await pool.query(selectSchemasSql, (err, res) => {
-  //   // Log the SQL statement to console
-  //   console.log("\nselectSchemasSql:", selectSchemasSql);
-  //
-  //   // Check for Postgres exceptions
-  //   if (err) {
-  //     console.log(`SELECT ${schemaName}:`, schemaCodes[err.code]);
-  //     console.log("ERROR code:", err.code);
-  //   } else if (res.rows !== undefined) {
-  //     // Iterate over the rows of Postgres schema names
-  //     res.rows.forEach(row => {
-  //       // Push the schema's name to the array
-  //       pgSchemas.push(row.schema_name);
-  //     });
-  //
-  //     // Log the number of Postgres schema names to console
-  //     console.log("schema names:", pgSchemas);
-  //     console.log("SELECT schema_name total schemas:", res.rowCount);
-  //   }
-  // });
+exports.createSchema = async () => {
 
-  // Create the SCHEMA with user auth if it doesn't exist
-  let createSql = `CREATE SCHEMA IF NOT EXISTS
-${schemaName} AUTHORIZATION ${postgresRole};`;
-
-  // Log the SQL statement to console
-  console.log("\ncreateSql:", createSql);
+  let createSql = `CREATE SCHEMA IF NOT EXISTS ${schemaName} AUTHORIZATION ${postgresUser};`;
   await pool.query(createSql, (createErr, createRes) => {
     if (createErr) {
-      console.log(
-        "CREATE SCHEMA ERROR:",
-        createErr.code,
-        "--",
-        schemaCodes[createErr.code]
-      );
       console.log("ERROR code:", createErr.code);
-      console.log("ERROR detail:", createErr.detail);
+      console.log("ERROR detail:", schemaCodes[createErr.code]);
     }
-
     if (createRes) {
-      console.log("\nCREATE SCHEMA RESULT:", createRes.command);
-
-      let createTableSql = `CREATE TABLE ${schemaName}.questionnaire_table(
-                                                        id INT primary key,
-                                                        patient_id VARCHAR,
-                                                        bundle JSONB
-                                                        );`;
-
-      console.log("\ncreateTableSql:", createTableSql);
-
-      pool.query(createTableSql, (tableErr, tableRes) => {
+      let createTableSql = `CREATE TABLE IF NOT EXISTS ${schemaName}
+      .fhir_resources(id SERIAL primary key, patient_id VARCHAR , bundle JSONB);`;
+      pool.query(createTableSql, (tableErr, _) => {
         if (tableErr) {
-          console.log(
-            "CREATE TABLE ERROR:",
-            tableErr.code,
-            "--",
-            schemaCodes[tableErr.code]
-          );
+          console.log(`CREATE TABLE ERROR:`, tableErr.code, "-",schemaCodes[tableErr.code]);
           console.log("createTableSql:", tableErr);
-        }
-
-        if (tableRes) {
-          console.log("\nCREATE TABLE RESULT:", tableRes);
         }
       });
     }
   });
 }
+//
+//
+// exports.storeBundle = (patientId, bundle) => {
+//   pool.query(`INSERT INTO fhir_resources(patient_id, bundle) VALUES(${patientId}, ${bundle}) RETURNING *`);
+// };

@@ -11,6 +11,19 @@ const postRequest = async (url, data) => {
   return await request.json()
 }
 
+const getRequest = async (url) => {
+  let request = await fetch(url, {
+    method: "GET",
+    mode: "cors",
+    headers: {
+      Origin: window.location.origin,
+      "Content-Type": "application/json"
+    }
+  })
+  return await request.json()
+}
+
 export default {
-  postRequest
+  postRequest,
+  getRequest
 };

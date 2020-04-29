@@ -2,12 +2,11 @@ import React, {useState} from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import "./css/Questionnaire.css"
-import api from "../api/post";
+import api from "../api";
 import util from "../util/utilities";
-import QuestionnaireResource from '../fhir/Questionnaire';
+import QuestionnaireResource from "../fhir/Questionnaire.json"
 
 const Questionnaire = () => {
-
   const [height, setHeight] = useState(0);
   const [weight, setWeight] = useState(0);
   const [bmiResult, setBmiResult] = useState(0);
@@ -17,19 +16,22 @@ const Questionnaire = () => {
     <div className={"Card"}>
       <h4>Patient ID : {patientId} </h4>
       <h3>{QuestionnaireResource.title}</h3>
-      <TextField label={QuestionnaireResource.item[0].text} type="decimal"
-                 onChange={event => setHeight(event.target.value)}/>
-      <br/><br/>
-      <TextField label={QuestionnaireResource.item[1].text}
-                 onChange={event => setWeight(event.target.value)}/>
-      <br/>
-      <br/>
-      <br/>
-      <Button className={"t3"} variant="contained" color="primary"
-              onClick={async () => setBmiResult(await calculate_bmi(height, weight, patientId))}>Calculate</Button>
-      <br/>
 
-      <p> Your BMI is: {bmiResult}</p>
+      <TextField label={QuestionnaireResource.item[0].text}
+                 style={{marginBottom: 16, display: "block"}}
+                 type="number"
+                 onChange={event => setHeight(event.target.value)}/>
+
+      <TextField label={QuestionnaireResource.item[1].text}
+                 style={{marginBottom: 16, display: "block"}}
+                 type="number"
+                 onChange={event => setWeight(event.target.value)}/>
+
+      <Button className={"t3"} variant="contained" color="primary"
+              style={{marginTop: 32, display: "block"}}
+              onClick={async () => setBmiResult(await calculate_bmi(height, weight, patientId))}>Calculate</Button>
+
+      <p style={{marginTop: 32}}> Your BMI is: {bmiResult}</p>
     </div>
   )
 };
@@ -38,7 +40,7 @@ const calculate_bmi = async (height, weight, patientId) => {
   const questionnaireRandomId = "QUESTIONNAIRE" + util.uuidGenerate();
   const data = {
     resourceType: "QuestionnaireResponse",
-    questionnaire: `Questionnaire/${QuestionnaireResource.id}`,
+    questionnaire: `${QuestionnaireResource.id}`,
     id: questionnaireRandomId,
     status: 'generated',
     authored: util.dateNow(),
@@ -64,7 +66,7 @@ const calculate_bmi = async (height, weight, patientId) => {
     ]
   };
 
-  const response = await api.postRequest(`http://localhost:3001/bmi/calculation?patient=${patientId}`, data)
+  const response = await api.postRequest(`http://localhost:3001/bmi/calculation/${patientId}`, data)
   return response.valueQuantity.value
 };
 
